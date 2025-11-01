@@ -1,0 +1,98 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Policies;
+
+use App\Models\User;
+
+/**
+ * User Policy
+ *
+ * Defines authorization logic for User management operations.
+ * Uses Spatie Permission package for role-based access control.
+ */
+class UserPolicy
+{
+    /**
+     * Determine if the user can view any users.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view users');
+    }
+
+    /**
+     * Determine if the user can view a specific user.
+     */
+    public function view(User $user, User $model): bool
+    {
+        return $user->can('view users');
+    }
+
+    /**
+     * Determine if the user can create users.
+     */
+    public function create(User $user): bool
+    {
+        return $user->can('create users');
+    }
+
+    /**
+     * Determine if the user can update the given user.
+     */
+    public function update(User $user, User $model): bool
+    {
+        // Users can't edit themselves through admin panel (use profile settings instead)
+        if ($user->id === $model->id) {
+            return false;
+        }
+
+        return $user->can('edit users');
+    }
+
+    /**
+     * Determine if the user can delete the given user.
+     */
+    public function delete(User $user, User $model): bool
+    {
+        // Users can't delete themselves
+        if ($user->id === $model->id) {
+            return false;
+        }
+
+        return $user->can('delete users');
+    }
+
+    /**
+     * Determine if the user can assign roles to other users.
+     */
+    public function assignRole(User $user): bool
+    {
+        return $user->can('assign roles');
+    }
+
+    /**
+     * Determine if the user can remove roles from other users.
+     */
+    public function removeRole(User $user): bool
+    {
+        return $user->can('assign roles'); // Same permission as assign
+    }
+
+    /**
+     * Determine if the user can restore the given user.
+     */
+    public function restore(User $user, User $model): bool
+    {
+        return $user->can('delete users');
+    }
+
+    /**
+     * Determine if the user can permanently delete the given user.
+     */
+    public function forceDelete(User $user, User $model): bool
+    {
+        return $user->can('delete users');
+    }
+}

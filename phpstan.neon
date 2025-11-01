@@ -1,0 +1,36 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 9
+
+    paths:
+        - app
+        - config
+        - database
+        - routes
+
+    # Exclude problematic paths
+    excludePaths:
+        - app/Http/Middleware/HandleInertiaRequests.php
+        - database/migrations/*_create_permission_tables.php
+        - bootstrap/*
+        - storage/*
+        - vendor/*
+
+    # Cache configuration for faster analysis
+    tmpDir: storage/phpstan
+
+    # Laravel specific
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    checkUnionTypes: true
+
+    # Strict rules
+    reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false
+
+    # Performance
+    parallel:
+        maximumNumberOfProcesses: 4
+        processTimeout: 300.0

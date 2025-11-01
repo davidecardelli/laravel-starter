@@ -1,0 +1,98 @@
+deptrac:
+  paths:
+    - ./app
+  exclude_files:
+    - '#.*test.*#'
+    - '#.*Test\.php$#'
+
+  layers:
+    # Models: Pure Domain - Eloquent models with business logic
+    - name: Models
+      collectors:
+        - type: directory
+          regex: app/Models/.*
+
+    # Policies: Authorization Layer - define access control
+    - name: Policies
+      collectors:
+        - type: directory
+          regex: app/Policies/.*
+
+    # Actions: Business Logic - orchestrate operations
+    - name: Actions
+      collectors:
+        - type: directory
+          regex: app/Actions/.*
+
+    # Controllers: Presentation Layer - handle HTTP requests
+    - name: Controllers
+      collectors:
+        - type: directory
+          regex: app/Http/Controllers/.*
+
+    # Requests: Validation Layer - form requests
+    - name: Requests
+      collectors:
+        - type: directory
+          regex: app/Http/Requests/.*
+
+    # Jobs: Background Tasks - async operations
+    - name: Jobs
+      collectors:
+        - type: directory
+          regex: app/Jobs/.*
+
+    # Middleware: HTTP Pipeline
+    - name: Middleware
+      collectors:
+        - type: directory
+          regex: app/Http/Middleware/.*
+
+  ruleset:
+    # Models: Can depend on NOTHING (pure domain)
+    Models: []
+
+    # Policies: Can use Models ONLY (authorization rules)
+    Policies:
+      - Models
+
+    # Actions: Can use Models ONLY (business logic isolation)
+    Actions:
+      - Models
+
+    # Controllers: Can use Actions, Models, Requests, Policies (thin orchestration)
+    Controllers:
+      - Actions
+      - Models
+      - Requests
+      - Policies
+
+    # Requests: Can use Models (for validation rules)
+    Requests:
+      - Models
+
+    # Jobs: Can use Actions and Models (background processing)
+    Jobs:
+      - Actions
+      - Models
+
+    # Middleware: Can use Models (for auth, permissions)
+    Middleware:
+      - Models
+
+  formatters:
+    graphviz:
+      pointToGroups: false
+      groups:
+        Models:
+          - Models
+        Authorization:
+          - Policies
+        Business:
+          - Actions
+        Presentation:
+          - Controllers
+          - Requests
+          - Middleware
+        Background:
+          - Jobs
