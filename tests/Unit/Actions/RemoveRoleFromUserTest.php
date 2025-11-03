@@ -41,7 +41,7 @@ test('remove role action removes role by model', function () {
     $user->assignRole($role);
 
     $action = new RemoveRoleFromUser;
-    $result = $action->executeWithRole($user, $role);
+    $result = $action->execute($user, $role);
 
     expect($result->hasRole('admin'))->toBeFalse();
 });

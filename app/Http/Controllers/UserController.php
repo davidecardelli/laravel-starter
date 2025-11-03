@@ -189,7 +189,7 @@ class UserController extends Controller
     ): RedirectResponse {
         $this->authorize('assignRole', User::class);
 
-        $assignRoleToUser->executeWithRole($user, $role);
+        $assignRoleToUser->execute($user, $role);
 
         return back()->with('success', "Role '{$role->name}' assigned successfully.");
     }
@@ -206,7 +206,7 @@ class UserController extends Controller
     ): RedirectResponse {
         $this->authorize('removeRole', User::class);
 
-        $removeRoleFromUser->executeWithRole($user, $role);
+        $removeRoleFromUser->execute($user, $role);
 
         return back()->with('success', "Role '{$role->name}' removed successfully.");
     }

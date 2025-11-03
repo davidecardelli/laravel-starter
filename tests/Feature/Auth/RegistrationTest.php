@@ -12,8 +12,8 @@ test('new users can register', function () {
         'last_name' => 'User',
         'phone' => '+39 333 1234567',
         'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
+        'password' => 'Xk7$mP!9qL2b',
+        'password_confirmation' => 'Xk7$mP!9qL2b',
     ]);
 
     $this->assertAuthenticated();

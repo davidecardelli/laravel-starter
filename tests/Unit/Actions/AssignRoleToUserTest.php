@@ -37,7 +37,7 @@ test('assign role action assigns role by model', function () {
     $role = Role::findByName('admin');
 
     $action = new AssignRoleToUser;
-    $result = $action->executeWithRole($user, $role);
+    $result = $action->execute($user, $role);
 
     expect($result->hasRole('admin'))->toBeTrue();
 });
@@ -81,7 +81,7 @@ test('assign role action logs operation with role model', function () {
     $role = Role::findByName('admin');
 
     $action = new AssignRoleToUser;
-    $action->executeWithRole($user, $role);
+    $action->execute($user, $role);
 
     Log::shouldHaveReceived('info')
         ->withArgs(function ($message, $context) {
